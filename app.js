@@ -27,16 +27,22 @@ const addImageWatermarkToImage = async function (inputFile, outputFile, watermar
   await image.quality(100).writeAsync(outputFile);
 };
 
-const prepareOutputFilename = async function (oneParam) {
-  const outputName = oneParam.split('.'); // moje rozwiązanie
-  const doneOutputName = outputName[0] + '-with-watermark.' + outputName[1];
-  // console.log(doneOutputName);
-  return doneOutputName;
-};
-// const prepareOutputFilename = (filename) => {
-//   const [ name, ext ] = filename.split('.'); podane rozwiązanie 
-//   return `${name}-with-watermark.${ext}`;
+// moje rozwiązanie
+// const prepareOutputFilename = async function (oneParam) {
+//   const outputName = oneParam.split('.'); 
+//   // const doneOutputName = outputName[0] + '-with-watermark.' + outputName[1];
+//   // console.log(doneOutputName);
+//   // return doneOutputName;
+//   // console.log(`${outputName[0]}-with-watermark.${outputName[1]}`);
+//   // return `${outputName[0]}-with-watermark.${outputName[1]}`;
 // };
+// podane rozwiązanie:
+const prepareOutputFilename = (filename) => {
+  const [ name, ext ] = filename.split('.');
+  return `${name}-with-watermark.${ext}`;
+};
+
+// prepareOutputFilename('pexels.jpg');
 
 const startApp = async () => {
 
@@ -60,14 +66,14 @@ const startApp = async () => {
     name: 'watermarkType',
     type: 'list',
     choices: ['Text watermark', 'Image watermark'],
-  }]);
+  }])
 
   if(options.watermarkType === 'Text watermark') {
     const text = await inquirer.prompt([{
       name: 'value',
       type: 'input',
       message: 'Type your watermark text:',
-    }]);
+    }])
     options.watermarkText = text.value;
     addTextWatermarkToImage('./img/' + options.inputImage, './img/' + prepareOutputFilename(options.inputImage), options.watermarkText);
   }
@@ -77,7 +83,7 @@ const startApp = async () => {
       type: 'input',
       message: 'Type your watermark name:',
       default: 'logo.png',
-    }]);
+    }])
     options.watermarkImage = image.filename;
     addImageWatermarkToImage('./img/' + options.inputImage, './img/' + prepareOutputFilename(options.inputImage), './img/' + options.watermarkImage);
   }
