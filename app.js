@@ -1,5 +1,6 @@
 const Jimp = require('jimp');
 const inquirer = require('inquirer');
+// import { existsSync } from 'fs';
 
 const addTextWatermarkToImage = async function (inputFile, outputFile, text) {
   const image = await Jimp.read(inputFile);
@@ -28,19 +29,19 @@ const addImageWatermarkToImage = async function (inputFile, outputFile, watermar
 };
 
 // moje rozwiązanie
-// const prepareOutputFilename = async function (oneParam) {
-//   const outputName = oneParam.split('.'); 
-//   // const doneOutputName = outputName[0] + '-with-watermark.' + outputName[1];
-//   // console.log(doneOutputName);
-//   // return doneOutputName;
-//   // console.log(`${outputName[0]}-with-watermark.${outputName[1]}`);
-//   // return `${outputName[0]}-with-watermark.${outputName[1]}`;
-// };
-// podane rozwiązanie:
-const prepareOutputFilename = (filename) => {
-  const [ name, ext ] = filename.split('.');
-  return `${name}-with-watermark.${ext}`;
+const prepareOutputFilename = (oneParam) => {
+  const outputName = oneParam.split('.'); 
+  const doneOutputName = outputName[0] + '-with-watermark.' + outputName[1];
+  // console.log(doneOutputName);
+  return doneOutputName;
+  // console.log(`${outputName[0]}-with-watermark.${outputName[1]}`);
+  // return `${outputName[0]}-with-watermark.${outputName[1]}`;
 };
+// podane rozwiązanie:
+// const prepareOutputFilename = (filename) => {
+//   const [ name, ext ] = filename.split('.');
+//   return `${name}-with-watermark.${ext}`;
+// };
 
 // prepareOutputFilename('pexels.jpg');
 
@@ -67,7 +68,7 @@ const startApp = async () => {
     type: 'list',
     choices: ['Text watermark', 'Image watermark'],
   }])
-
+// if ()
   if(options.watermarkType === 'Text watermark') {
     const text = await inquirer.prompt([{
       name: 'value',
