@@ -66,6 +66,13 @@ const startApp = async () => {
     type: 'list',
     choices: ['Text watermark', 'Image watermark'],
   }])
+
+  try {
+    throw (fs.existsSync(`./img/${options.inputImage}`));
+  }
+  catch (error) {
+    console.log('Something went wrong... Try again');
+  }
   if (fs.existsSync(`./img/${options.inputImage}`)) {
     if (options.watermarkType === 'Text watermark') {
       const text = await inquirer.prompt([{
@@ -86,17 +93,25 @@ const startApp = async () => {
         default: 'logo.png',
       }])
       options.watermarkImage = image.filename;
+      try {
+        throw (fs.existsSync(`./img/${options.watermarkImage}`));
+      }
+      catch (error) {
+        console.log('Something went wrong... Try again');
+      }
       if (fs.existsSync(`./img/${options.watermarkImage}`)) {
         addImageWatermarkToImage('./img/' + options.inputImage, './img/' + prepareOutputFilename(options.inputImage), './img/' + options.watermarkImage);
         console.log('Successfully added image watermark to Image!');
         startApp();
-      } else {
-        console.log('Something went wrong... Try again');
-      }
-      }
-  } else {
-    console.log('Something went wrong... Try again');
+      } 
+      // else {
+      //   console.log('Something went wrong... Try again');
+      // }
+    }
   }
+  // else {
+  //   console.log('Something went wrong... Try again');
+  // }
 }
 
 startApp();
